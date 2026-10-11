@@ -1,6 +1,6 @@
-package com.facape.repository;
+package com.gestaoapi.repository;
 
-import com.facape.model.Produto;
+import com.gestaoapi.model.Produto;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -12,4 +12,17 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class ProdutoRepository {
 
+    private final List<Produto> produtos = Collections.synchronizedList(new ArrayList<>());
+
+    private final AtomicLong idGenerator = new AtomicLong(1);
+
+    public Produto salvar(Produto produto) {
+        produto.setId(idGenerator.getAndIncrement());
+        produtos.add(produto);
+        return produto;
+    }
+
+    public List<Produto> buscarTodos() {
+        return new ArrayList<>(produtos);
+    }
 }
